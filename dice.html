@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <title>Simulador de Dado com Logs</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; 
+            margin: 0;
+            background-color: black;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+
+        #dice {
+            cursor: pointer;
+            width: 450px;
+            height: 450px;
+            border: 4px solid #7a7a7a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3em;
+        }
+
+        #current-time {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-size: 1.2em;
+            background-color: #000;
+            padding: 10px;
+            border: 1px solid #7a7a7a;
+        }
+
+        #logs {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: '40%';
+            max-height: 100px;
+            overflow-y: auto;
+            background-color: #333;
+            padding: 25px;
+            border: 1px solid #7a7a7a;
+            font-size: 1.2em;
+
+        }
+
+        .log-message {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="dice">5</div>
+    <div id="current-time"></div>
+    <div id="logs"></div>
+
+    <script>
+        function currentTime() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            const timeString = `${hours}:${minutes}:${seconds}`;
+            document.getElementById('current-time').textContent = timeString;
+        }
+
+        const dice = document.getElementById('dice');
+        const logsContainer = document.getElementById('logs');
+
+        dice.addEventListener('click', function () {
+            rollDice();
+            currentTime();
+        });
+
+        function rollDice() {
+            const randomNumber = Math.floor(Math.random() * 20) + 1;
+            dice.textContent = randomNumber;
+            const logMessage = `Número sorteado: ${randomNumber}. Tempo atual: ${new Date().toLocaleTimeString()}`;
+            appendLog(logMessage);
+        }
+
+        function appendLog(message) {
+            const logElement = document.createElement('div');
+            logElement.textContent = message;
+            logsContainer.appendChild(logElement);
+
+            logsContainer.scrollTop = logsContainer.scrollHeight;
+        }
+
+        setInterval(currentTime, 1000);
+    </script>
+</body>
+
+</html>
